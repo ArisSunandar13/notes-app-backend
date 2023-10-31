@@ -1,0 +1,8 @@
+services:
+  notes-app-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'notes-app-backend'
+    ports:
+      - 80:5000
