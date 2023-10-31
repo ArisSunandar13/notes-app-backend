@@ -12,7 +12,9 @@
     "rules": {
         "no-console": "off",
         "no-underscore-dangle": "off",
-        "indent": "off",
-        "semi": "off"
+        "indent":"off",
+        "semi": "off",
+        "camelcase":"off",
+        "import/no-extraneous-dependencies": "off"
     }
 }

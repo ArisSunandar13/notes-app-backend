@@ -1,8 +1,45 @@
 services:
   notes-app-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: 'notes-app-backend'
+    build: .
+    container_name: notes-app-backend
+    command: sh -c "npm run migrate up && node ./src/server.js"
     ports:
-      - 80:5000
+      - 5000:5000
+    depends_on:
+      - db-notes-app
+    networks:
+      - notes-app-network
+
+  db-notes-app:
+    image: postgres
+    container_name: db-notes-app
+    restart: always
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=passwd
+      - POSTGRES_DB=notesapp
+    expose:
+      - 5432
+    networks:
+      - notes-app-network
+    volumes:
+      - db-notes-app-volume:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: adminer-db-notes-app
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db-notes-app
+    networks:
+      - notes-app-network
+
+networks:
+  notes-app-network:
+    name: notes-app-network
+
+volumes:
+  db-notes-app-volume:
+    name: db-notes-app-volume
